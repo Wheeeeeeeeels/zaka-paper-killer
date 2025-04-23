@@ -1,0 +1,52 @@
+{
+    "conferences": [
+        {
+            "name": "ICML",
+            "keywords": ["machine learning", "deep learning", "reinforcement learning", "neural networks"],
+            "accepted_quality_levels": ["high", "very high"],
+            "next_deadline": "2024-01-15",
+            "impact_factor": 9.8,
+            "submission_requirements": {
+                "page_limit": 8,
+                "format": "double-column",
+                "anonymous": true
+            }
+        },
+        {
+            "name": "ICLR",
+            "keywords": ["deep learning", "representation learning", "neural networks", "unsupervised learning"],
+            "accepted_quality_levels": ["high", "very high"],
+            "next_deadline": "2024-09-15",
+            "impact_factor": 9.5,
+            "submission_requirements": {
+                "page_limit": 9,
+                "format": "single-column",
+                "anonymous": true
+            }
+        },
+        {
+            "name": "NeurIPS",
+            "keywords": ["machine learning", "neural networks", "artificial intelligence", "statistics"],
+            "accepted_quality_levels": ["high", "very high"],
+            "next_deadline": "2024-05-15",
+            "impact_factor": 9.2,
+            "submission_requirements": {
+                "page_limit": 8,
+                "format": "double-column",
+                "anonymous": true
+            }
+        },
+        {
+            "name": "CVPR",
+            "keywords": ["computer vision", "image processing", "deep learning", "pattern recognition"],
+            "accepted_quality_levels": ["high", "very high"],
+            "next_deadline": "2024-11-15",
+            "impact_factor": 8.9,
+            "submission_requirements": {
+                "page_limit": 8,
+                "format": "double-column",
+                "anonymous": true
+            }
+        }
+    ]
+} 
