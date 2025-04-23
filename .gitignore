@@ -49,4 +49,22 @@ Thumbs.db
 # Cache
 .cache/
 .temp/
-.tmp/ 
+.tmp/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Local development settings
+*.log 
