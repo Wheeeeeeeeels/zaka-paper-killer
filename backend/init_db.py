@@ -1,4 +1,4 @@
-from models.database import Base, engine
+from core.database import Base, engine
 from models.models import User, Paper, Review
 
 def init_db():

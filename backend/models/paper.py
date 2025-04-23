@@ -1,62 +1,41 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, JSON
+from sqlalchemy import Boolean, Column, Integer, String, DateTime, Text, ForeignKey
+from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
-from datetime import datetime
-from .base import Base
+from ..core.database import Base
 
 class Paper(Base):
     __tablename__ = "papers"
-    
+
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(255), nullable=False)
+    title = Column(String, index=True)
     abstract = Column(Text)
-    keywords = Column(String(255))
-    content = Column(Text)
-    status = Column(String(50), default="draft")  # draft, submitted, under_review, accepted, rejected
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    authors = Column(String)
+    conference = Column(String)
+    year = Column(Integer)
+    doi = Column(String, unique=True)
+    pdf_url = Column(String)
+    status = Column(String)  # draft, submitted, accepted, rejected
     user_id = Column(Integer, ForeignKey("users.id"))
-    
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
     # 关系
     user = relationship("User", back_populates="papers")
-    experiments = relationship("Experiment", back_populates="paper")
-    submissions = relationship("Submission", back_populates="paper")
-    reviews = relationship("Review", back_populates="paper")
+    analysis = relationship("PaperAnalysis", back_populates="paper", uselist=False)
 
-class Experiment(Base):
-    __tablename__ = "experiments"
-    
+class PaperAnalysis(Base):
+    __tablename__ = "paper_analyses"
+
     id = Column(Integer, primary_key=True, index=True)
     paper_id = Column(Integer, ForeignKey("papers.id"))
-    name = Column(String(255))
-    description = Column(Text)
-    results = Column(JSON)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    
-    # 关系
-    paper = relationship("Paper", back_populates="experiments")
+    keywords = Column(String)
+    main_contribution = Column(Text)
+    methodology = Column(Text)
+    results = Column(Text)
+    limitations = Column(Text)
+    future_work = Column(Text)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
-class Submission(Base):
-    __tablename__ = "submissions"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    paper_id = Column(Integer, ForeignKey("papers.id"))
-    conference = Column(String(100))
-    submission_date = Column(DateTime)
-    status = Column(String(50))  # submitted, under_review, accepted, rejected
-    created_at = Column(DateTime, default=datetime.utcnow)
-    
     # 关系
-    paper = relationship("Paper", back_populates="submissions")
-
-class Review(Base):
-    __tablename__ = "reviews"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    paper_id = Column(Integer, ForeignKey("papers.id"))
-    reviewer = Column(String(100))
-    comments = Column(Text)
-    score = Column(Integer)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    
-    # 关系
-    paper = relationship("Paper", back_populates="reviews") 
+    paper = relationship("Paper", back_populates="analysis") 

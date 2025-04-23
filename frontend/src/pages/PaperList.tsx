@@ -12,6 +12,7 @@ import {
   Spin,
   Modal,
   Form,
+  Typography,
 } from 'antd';
 import {
   PlusOutlined,
@@ -19,18 +20,24 @@ import {
   EditOutlined,
   DeleteOutlined,
   ExclamationCircleOutlined,
+  FileTextOutlined,
 } from '@ant-design/icons';
 import { getPapers, createPaper } from '../services/paper';
+import axios from 'axios';
+import FileUpload from '../components/paper/FileUpload';
+import FilePreview from '../components/paper/FilePreview';
 
 const { Search } = Input;
 const { Option } = Select;
 const { confirm } = Modal;
+const { Title } = Typography;
 
 interface Paper {
   id: string;
   title: string;
   status: string;
   createdAt: string;
+  pdf_url: string;
 }
 
 const PaperList: React.FC = () => {
@@ -44,10 +51,14 @@ const PaperList: React.FC = () => {
   const navigate = useNavigate();
 
   const fetchPapers = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const data = await getPapers();
-      setPapers(data);
+      const response = await axios.get('/api/v1/papers', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      setPapers(response.data);
     } catch (error) {
       message.error('获取论文列表失败');
     } finally {
@@ -80,24 +91,18 @@ const PaperList: React.FC = () => {
     }
   };
 
-  const handleDelete = (id: string) => {
-    confirm({
-      title: '确认删除',
-      icon: <ExclamationCircleOutlined />,
-      content: '确定要删除这篇论文吗？此操作不可恢复。',
-      okText: '确定',
-      okType: 'danger',
-      cancelText: '取消',
-      onOk: async () => {
-        try {
-          await deletePaper(id);
-          message.success('删除成功');
-          fetchPapers();
-        } catch (error) {
-          message.error('删除失败');
+  const handleDelete = async (id: string) => {
+    try {
+      await axios.delete(`/api/v1/papers/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         }
-      },
-    });
+      });
+      message.success('删除成功');
+      fetchPapers();
+    } catch (error) {
+      message.error('删除失败');
+    }
   };
 
   const getStatusColor = (status: string) => {
@@ -138,8 +143,31 @@ const PaperList: React.FC = () => {
       key: 'action',
       render: (_, record: Paper) => (
         <Space size="middle">
-          <Button type="link" onClick={() => navigate(`/papers/${record.id}`)}>
-            查看
+          <FilePreview
+            fileUrl={record.pdf_url}
+            fileName={record.title}
+          />
+          <Button
+            type="link"
+            icon={<EditOutlined />}
+            onClick={() => navigate(`/papers/${record.id}/edit`)}
+          >
+            编辑
+          </Button>
+          <Button
+            type="link"
+            icon={<FileTextOutlined />}
+            onClick={() => navigate(`/papers/${record.id}/analysis`)}
+          >
+            分析
+          </Button>
+          <Button
+            type="link"
+            danger
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record.id)}
+          >
+            删除
           </Button>
         </Space>
       ),
@@ -148,6 +176,13 @@ const PaperList: React.FC = () => {
 
   return (
     <div style={{ padding: '24px' }}>
+      <Title level={2}>论文管理</Title>
+      
+      <Card style={{ marginBottom: 24 }}>
+        <Title level={4}>上传论文</Title>
+        <FileUpload />
+      </Card>
+
       <Card
         title="论文管理"
         extra={
