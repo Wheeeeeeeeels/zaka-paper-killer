@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project_name }}</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1d4ed8;
+            --text-color: #1f2937;
+            --light-bg: #f3f4f6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #ffffff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            background-color: var(--light-bg);
+            border-radius: 0.5rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .version {
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background: #fff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        
+        .feature-card p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .endpoints {
+            margin-top: 1rem;
+        }
+        
+        .endpoint {
+            background: var(--light-bg);
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+            font-family: monospace;
+        }
+        
+        .endpoint .method {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .endpoint .description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        .links {
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            margin: 0 0.5rem;
+            transition: background-color 0.2s;
+        }
+        
+        .button:hover {
+            background-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>{{ project_name }}</h1>
+            <div class="version">版本 {{ version }}</div>
+        </header>
+        
+        <div class="features">
+            {% for feature in features %}
+            <div class="feature-card">
+                <h3>{{ feature.name }}</h3>
+                <p>{{ feature.description }}</p>
+                <div class="endpoints">
+                    {% for endpoint in feature.endpoints %}
+                    <div class="endpoint">
+                        <span class="method">{{ endpoint.method }}</span>
+                        <span class="path">{{ api_base_url }}{{ endpoint.path }}</span>
+                        <div class="description">{{ endpoint.description }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="links">
+            <a href="{{ api_docs_url }}" class="button">API 文档 (Swagger)</a>
+            <a href="{{ redoc_url }}" class="button">API 文档 (ReDoc)</a>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,4 +1,13 @@
 {
+  "name": "paper-killer",
+  "version": "1.0.0",
+  "description": "Paper Killer - Academic Paper Management System",
+  "scripts": {
+    "start": "cd frontend && npm start",
+    "install-all": "npm install && cd frontend && npm install",
+    "build": "cd frontend && npm run build",
+    "test": "cd frontend && npm test"
+  },
   "devDependencies": {
     "@types/node": "^22.14.1"
   }

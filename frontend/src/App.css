@@ -8,6 +8,12 @@
   background: #fff;
 }
 
+.ant-layout-header {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+}
+
 .logo {
   float: left;
   width: 120px;
@@ -27,8 +33,8 @@
     padding: 12px;
   }
   
-  .ant-layout-header {
-    padding: 0 12px;
+  .ant-card {
+    margin-bottom: 16px;
   }
 }
 
@@ -40,6 +46,7 @@
 
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
