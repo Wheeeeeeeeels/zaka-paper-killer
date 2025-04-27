@@ -72,77 +72,26 @@ export const userAPI = {
 
 // 论文相关接口
 export const paperAPI = {
-  // 获取ICLR 2025论文列表
-  getICLRPapers: async () => {
-    try {
-      const response = await api.get('/papers/iclr2025');
-      console.log('获取到的论文列表:', response);
-      return response;
-    } catch (error) {
-      console.error('获取论文列表失败:', error);
-      throw error;
-    }
-  },
+  // 获取论文列表
+  getPapers: (conference) => api.get(`/papers/${conference}2025`),
   
   // 获取特定论文
-  getPaper: async (id) => {
-    try {
-      const response = await api.get(`/papers/iclr2025/${id}`);
-      console.log('获取到的论文详情:', response);
-      return response;
-    } catch (error) {
-      console.error('获取论文详情失败:', error);
-      throw error;
-    }
-  },
+  getPaper: (conference, id) => api.get(`/papers/${conference}2025/${id}`),
   
   // 搜索论文
-  searchPapers: async (query) => {
-    try {
-      const response = await api.get('/papers/iclr2025/search', { params: { q: query } });
-      console.log('搜索结果:', response);
-      return response;
-    } catch (error) {
-      console.error('搜索论文失败:', error);
-      throw error;
-    }
-  },
+  searchPapers: (conference, query) => api.get(`/papers/${conference}2025/search`, { params: { q: query } }),
   
   // 按主题筛选论文
-  getPapersByTopic: async (topic) => {
-    try {
-      const response = await api.get(`/papers/iclr2025/topic/${topic}`);
-      console.log('按主题筛选结果:', response);
-      return response;
-    } catch (error) {
-      console.error('按主题筛选失败:', error);
-      throw error;
-    }
-  },
+  getPapersByTopic: (conference, topic) => api.get(`/papers/${conference}2025/topic/${topic}`),
   
   // 按track筛选论文
-  getPapersByTrack: async (track) => {
-    try {
-      const response = await api.get(`/papers/iclr2025/track/${track}`);
-      console.log('按track筛选结果:', response);
-      return response;
-    } catch (error) {
-      console.error('按track筛选失败:', error);
-      throw error;
-    }
-  },
+  getPapersByTrack: (conference, track) => api.get(`/papers/${conference}2025/track/${track}`),
   
   // 更新论文数据
-  updatePapers: async () => {
-    try {
-      const response = await api.post('/papers/iclr2025/update');
-      console.log('更新论文数据结果:', response);
-      return response;
-    } catch (error) {
-      console.error('更新论文数据失败:', error);
-      throw error;
-    }
-  },
+  updatePapers: (conference) => api.post(`/papers/${conference}2025/update`),
+  
+  // 创建新论文
+  createPaper: (conference, data) => api.post(`/papers/${conference}2025/create`, data),
   
   // 获取论文列表
   getPapers: () => api.get('/papers'),
@@ -219,25 +168,13 @@ export const paperAPI = {
   // 回复评论
   replyComment: (id, commentId, content) => api.post(`/papers/${id}/comments/${commentId}/reply`, { content }),
 
-  // ICLR相关接口
+  // 论文分析相关接口
   analyzePaper: (id) => api.post(`/papers/${id}/analyze`),
   getUserInterests: () => api.get('/users/interests'),
   updateUserInterests: (interests) => api.put('/users/interests', { interests }),
   getPaperRecommendations: (paperId) => api.get(`/papers/${paperId}/recommendations`),
   getSimilarPapers: (paperId) => api.get(`/papers/${paperId}/similar`),
   getPaperInsights: (paperId) => api.get(`/papers/${paperId}/insights`),
-
-  // 创建新论文
-  createPaper: async (data) => {
-    try {
-      const response = await api.post('/papers/iclr2025/create', data);
-      console.log('创建的论文:', response);
-      return response;
-    } catch (error) {
-      console.error('创建论文失败:', error);
-      throw error;
-    }
-  },
 };
 
 export default api; 
